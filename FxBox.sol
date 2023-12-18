@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./ICard.sol";
 
-contract FxBox is Ownable, ReentrancyGuard {
+contract FxBox is Ownable(msg.sender), ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     IERC20 public currencyToken;
