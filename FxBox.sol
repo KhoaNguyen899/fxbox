@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./ICard.sol";
 
-contract FxBox is Ownable(msg.sender), ReentrancyGuard {
+contract FxBox is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     IERC20 public currencyToken;
@@ -60,6 +60,18 @@ contract FxBox is Ownable(msg.sender), ReentrancyGuard {
         supply -= _amount;
 
         emit BuyedBox(msg.sender, _amount, _amount * price);
+    }
+
+    function mintBox(uint256 _amount, address _to) external onlyOwner {
+        require(supply >= _amount, "Insufficient supply");
+
+        for (uint256 i = 0; i < _amount; i++) {
+            fxCard.safeMint(_to);
+        }
+
+        supply -= _amount;
+
+        emit BuyedBox(_to, _amount, _amount * price);
     }
 
     /// @notice event emitted when a user has Deposited a LP
